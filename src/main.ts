@@ -12,6 +12,10 @@ import { HohentwielUI, H_SLIDES } from './hohentwiel/ui';
 import { H_SOURCES } from './hohentwiel/game';
 Object.assign(SOURCES, H_SOURCES);
 let ht: HohentwielUI | null = null;
+import { PhilippsburgUI, P_SLIDES } from './philippsburg/ui';
+import { P_SOURCES } from './philippsburg/game';
+Object.assign(SOURCES, P_SOURCES);
+let ph: PhilippsburgUI | null = null;
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 const cv = $<HTMLCanvasElement>('cv');
@@ -86,16 +90,28 @@ const modalOpen = () => !$('modal').classList.contains('hidden');
 
 // ---------- Start ----------
 async function start(): Promise<void> {
-  document.body.classList.remove('fb', 'ht');
-  fb = null; game = null; ht = null;
+  document.body.classList.remove('fb', 'ht', 'ph');
+  fb = null; game = null; ht = null; ph = null;
   const c = await modal(`<h1>Kriegsjahre im Südwesten</h1>
     <p class="sub">Geschichtsspiele nach echten Ereignissen des Dreißigjährigen Krieges</p>
     <p class="small">Belegte Fakten sind <span class="tag belegt">Belegt</span> markiert, allgemeines Wissen <span class="tag hintergrund">Hintergrundwissen</span>, Ergänztes <span class="tag erfunden">Erfunden fürs Spiel</span>.</p>`,
-    ['Kapitel 3: Hohentwiel 1634–1650', 'Kapitel 2: Schlacht bei Freiburg 1644', 'Kapitel 1: Belagerung von Wildenstein 1642'], 'start');
+    ['Kapitel 4: Belagerung von Philippsburg 1644', 'Kapitel 3: Hohentwiel 1634–1650', 'Kapitel 2: Schlacht bei Freiburg 1644', 'Kapitel 1: Belagerung von Wildenstein 1642'], 'start');
   audio(); song('tanz');
-  if (c === 0) return startHohentwiel();
-  if (c === 1) return startFreiburg();
+  if (c === 0) return startPhilippsburg();
+  if (c === 1) return startHohentwiel();
+  if (c === 2) return startFreiburg();
   return startWildenstein();
+}
+
+async function startPhilippsburg(): Promise<void> {
+  const i = await modal(`<h1>Philippsburg 1644</h1><p class="sub">Die Belagerung der Rheinfestung, 25. August bis 9. September 1644</p>
+    <p>Nach der Schlacht bei Freiburg zieht Enghien den Rhein hinab. In Philippsburg hält Oberst Caspar Baumberger mit rund 500 Mann eine Festung, die für viel mehr gebaut ist. Mercy will zum Entsatz kommen. Wer ist schneller?</p>`,
+    ['Zurück', 'Vorspann ansehen', 'Zwei Spieler an einem Gerät', 'Als Besatzung (gegen KI)', 'Als Franzosen (gegen KI)'], 'start');
+  if (i === 0) return start();
+  if (i === 1) { await intro(P_SLIDES); return startPhilippsburg(); }
+  const ctrl: Record<'fr' | 'imp', 'human' | 'ai'> = i === 2 ? { fr: 'human', imp: 'human' } : i === 3 ? { fr: 'ai', imp: 'human' } : { fr: 'human', imp: 'ai' };
+  ph = new PhilippsburgUI({ modal, entryHtml, log, song, boom, exit: () => { ph = null; start(); } }, ctrl);
+  ph.run();
 }
 
 async function startHohentwiel(): Promise<void> {
@@ -402,7 +418,8 @@ function frame(now: number) {
   if (cv.width !== Math.round(cw * dpr) || cv.height !== Math.round(ch * dpr)) { cv.width = Math.round(cw * dpr); cv.height = Math.round(ch * dpr); }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.fillStyle = '#1d1b18'; ctx.fillRect(0, 0, cw, ch);
-  if (ht) { ht.draw(ctx, cw, ch, dt); document.documentElement.style.setProperty('--ctlh', ($('htPanel').offsetHeight + 6) + 'px'); }
+  if (ph) { ph.draw(ctx, cw, ch, dt); document.documentElement.style.setProperty('--ctlh', ($('phCtl').offsetHeight + 6) + 'px'); }
+  else if (ht) { ht.draw(ctx, cw, ch, dt); document.documentElement.style.setProperty('--ctlh', ($('htPanel').offsetHeight + 6) + 'px'); }
   else if (fb) { fb.draw(ctx, cw, ch, dt); document.documentElement.style.setProperty('--ctlh', ($('fbPanel').offsetHeight + 6) + 'px'); }
   else if (game) {
     game.update(dt);

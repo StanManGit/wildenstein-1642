@@ -120,3 +120,26 @@ body.ht #htPanel{display:block;position:absolute;left:0;right:0;bottom:0;backgro
 #htActs .act{display:flex;flex-direction:column;align-items:flex-start;text-align:left;flex:1 1 180px;max-width:320px;padding:5px 9px}
 #htActs .act small{font-size:11px;opacity:.75;line-height:1.25}
 @media (max-height:500px){#htActs .act small{display:none}body.ht #htHud{font-size:12px}#htHud .row2{font-size:11px}}
+
+/* Kapitel 4 Philippsburg */
+#phHud,#phCtl{display:none}
+body.ph #hud,body.ph #ctl{display:none}
+body.ph #phHud{display:block;position:absolute;left:0;right:0;top:0;background:linear-gradient(#2a241dee,#2a241dcc);padding:5px 10px;border-bottom:1px solid #6b5a3c;font-size:14px}
+#phHud .row1{display:flex;gap:12px;align-items:center}
+#phHud .row2{font-size:13px;margin-top:3px;line-height:1.35}
+#phHud button{padding:2px 8px;font-size:13px}
+#phHud .fr{color:#9db4f0}#phHud .imp{color:#f0d27a}
+body.ph #phCtl{display:block;position:absolute;left:0;right:0;bottom:0;background:linear-gradient(#2a241dcc,#2a241df2);border-top:1px solid #6b5a3c;padding:6px 10px calc(6px + env(safe-area-inset-bottom))}
+#phCtl.ai #phBody{opacity:.55;pointer-events:none}
+#phAi{font-size:12px;opacity:.8;min-height:0}
+#phBody{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center}
+#phBody .task{display:flex;align-items:center;gap:5px;font-size:13px}
+#phBody .task .tn{min-width:92px}
+#phBody .task button{padding:0 8px;font-size:15px;line-height:1.3}
+#phBody .task .pips{color:#9db4f0;letter-spacing:-1px;min-width:40px;font-size:11px}
+#phBody .actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center;flex-basis:100%}
+#phBody .cards{display:flex;gap:6px;flex-wrap:wrap;width:100%}
+#phBody .act{display:flex;flex-direction:column;align-items:flex-start;text-align:left;flex:1 1 170px;max-width:300px;padding:5px 9px}
+#phBody .act small{font-size:11px;opacity:.75;line-height:1.25}
+@media (max-height:500px){#phBody .act small{display:none}#phBody .act{flex:1 1 90px;padding:3px 6px}#phBody .task .tn{min-width:0}#phBody .task .pips{display:none}#phHud .row2{font-size:11px}#phBody .task{font-size:11px}}
+#phBody .free{font-size:12px;opacity:.8}

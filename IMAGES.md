@@ -28,4 +28,12 @@ Die Bilder im Vorspann werden direkt von Wikimedia Commons geladen. Lizenzen gep
 | Konrad Widerholt Stich.jpg | unbekannt, 17. Jh. | gemeinfrei |
 | Hohentwiel Belagerung 1641 Merian.JPG | Matthäus Merian d. Ä., nach 1641 | gemeinfrei |
 
+## Kapitel 4
+
+| Datei | Urheber | Lizenz |
+|---|---|---|
+| Palatinatus Rheni (Merian) 154.jpg | Merian/Zeiller, Topographia Palatinatus Rheni, 1645 | gemeinfrei |
+| Siège de Philippsburg (1644) - JB Le Paon - Musée Condé (cropped).jpg | Jean-Baptiste Le Paon, 1769 | gemeinfrei |
+| FestungPhilippsburg1.jpg | Merian/Zeiller | gemeinfrei |
+
 Musik: eigene Kompositionen im Stil um 1600, im Browser synthetisiert.
