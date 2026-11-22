@@ -1,7 +1,8 @@
 import { Game, Cmd, Controller } from './game';
 import { drawScene, fitView, toWorld, View } from './render';
 import { Gun, TYPES, Side } from './sim';
-import { PROLOG, CHRONICLE, EPILOG, SPOTS, SOURCES, Entry, tagLabel, dateOf, GUNINFO_NOTE } from './history';
+import { PROLOG, CHRONICLE, EPILOG, SPOTS, SOURCES, Entry, tagLabel, dateOf, GUNINFO_NOTE, SLIDES, commonsUrl, commonsPage, MUSIC_NOTE } from './history';
+import { Music } from './music';
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 const cv = $<HTMLCanvasElement>('cv');
@@ -12,6 +13,9 @@ let sel: Gun | null = null;
 let mainView: View | null = null;
 let insetView: View | null = null;
 let muted = localStorage.getItem('wild-muted') === '1';
+let musicOn = localStorage.getItem('wild-music') !== '0';
+let music: Music | null = null;
+function song(name: 'tanz' | 'marsch') { if (!ac) return; if (!music) music = new Music(ac); if (musicOn) music.play(name); }
 const seen = new Set<number>();
 
 // ---------- Ton ----------
@@ -78,10 +82,11 @@ async function start() {
     <p class="sub">Die Belagerung einer Felsenburg im Oberen Donautal</p>
     <p>August 1642. Truppen vom Hohentwiel haben die Burg Wildenstein durch einen Handstreich genommen. Nun rücken die Bayern an. Wer gewinnt die 25 Tage bis zum 4. September?</p>
     <p class="small">Ein Geschichtsspiel nach echten Ereignissen. Belegte Fakten sind <span class="tag belegt">Belegt</span> markiert, Ergänztes ist <span class="tag erfunden">Erfunden fürs Spiel</span>.</p>`;
-  const i = await modal(html, ['Geschichte & Burg', 'Zwei Spieler an einem Gerät', 'Als Besatzung (gegen KI)', 'Als Bayern (gegen KI)'], 'start');
-  audio();
-  if (i === 0) { await showLexikon(); return start(); }
-  const ctrl: Record<Side, Controller> = i === 1 ? { att: 'human', def: 'human' } : i === 2 ? { att: 'ai', def: 'human' } : { att: 'human', def: 'ai' };
+  const i = await modal(html, ['Vorspann ansehen', 'Geschichte & Burg', 'Zwei Spieler an einem Gerät', 'Als Besatzung (gegen KI)', 'Als Bayern (gegen KI)'], 'start');
+  audio(); song('tanz');
+  if (i === 0) { await intro(); return start(); }
+  if (i === 1) { await showLexikon(); return start(); }
+  const ctrl: Record<Side, Controller> = i === 2 ? { att: 'human', def: 'human' } : i === 3 ? { att: 'ai', def: 'human' } : { att: 'human', def: 'ai' };
   game = new Game((Math.random() * 2 ** 31) | 0, ctrl, { log, boom, changed: updateUI });
   sel = null;
   seen.clear();
@@ -89,7 +94,29 @@ async function start() {
     await modal(`<div class="kicker">Vorgeschichte ${k + 1}/${PROLOG.length}</div>` + entryHtml(PROLOG[k], 'h2'), [k < PROLOG.length - 1 ? 'Weiter' : 'Zur Belagerung']);
   }
   await showHelp(ctrl);
+  song('marsch');
   flow();
+}
+
+function intro(): Promise<void> {
+  return new Promise(res => {
+    const el = $('intro');
+    let k = 0;
+    const show = () => {
+      if (k >= SLIDES.length) { el.classList.add('hidden'); localStorage.setItem('wild-intro', '1'); res(); return; }
+      const sl = SLIDES[k];
+      el.innerHTML = `<div class="frame"><img alt="${sl.title}" src="${commonsUrl(sl.file)}" class="kb${k % 2}"></div>
+        <div class="cap"><span class="tag ${sl.tag}">${tagLabel(sl.tag)}</span><h2>${sl.title}</h2><p>${sl.text}</p>
+        <div class="credit"><a href="${commonsPage(sl.file)}" target="_blank" rel="noopener">${sl.credit}</a> · ${sl.license}</div>
+        <div class="btns"><button id="skip">Überspringen</button><button id="nxt" class="primary">${k < SLIDES.length - 1 ? 'Weiter' : 'Zum Spiel'}</button></div></div>`;
+      const img = el.querySelector('img')!;
+      img.onerror = () => { img.style.display = 'none'; };
+      $('nxt').onclick = () => { k++; show(); };
+      $('skip').onclick = () => { k = SLIDES.length; show(); };
+    };
+    el.classList.remove('hidden');
+    show();
+  });
 }
 
 async function showHelp(ctrl: Record<Side, Controller>) {
@@ -111,7 +138,7 @@ async function showLexikon() {
   const guns = Object.values(TYPES).map(t => `<div class="entry"><span class="tag ${t.invented ? 'erfunden' : 'belegt'}">${t.invented ? 'Bei den Bayern erfunden' : 'Auf der Burg belegt'}</span><h3>${t.name}</h3><p>${t.info}</p></div>`).join('');
   const src = Object.values(SOURCES).map(s => `<li><a href="${s.url}" target="_blank" rel="noopener">${s.name}</a></li>`).join('');
   await modal(`<h2>Burg, Geschütze und Quellen</h2>
-    <div class="scroll">${PROLOG.map(e => entryHtml(e)).join('')}<h3 class="sect">Die Burg</h3>${spots}<h3 class="sect">Die Geschütze</h3><p class="small">${GUNINFO_NOTE}</p>${guns}${entryHtml(EPILOG)}<h3 class="sect">Quellen</h3><ul>${src}</ul></div>`, ['Schließen'], 'wide');
+    <div class="scroll">${PROLOG.map(e => entryHtml(e)).join('')}<h3 class="sect">Die Burg</h3>${spots}<h3 class="sect">Die Geschütze</h3><p class="small">${GUNINFO_NOTE}</p>${guns}${entryHtml(EPILOG)}<h3 class="sect">Musik</h3>${entryHtml(MUSIC_NOTE)}<h3 class="sect">Quellen</h3><ul>${src}</ul><h3 class="sect">Bildnachweis (Vorspann)</h3><ul>${SLIDES.map(sl => `<li><a href="${commonsPage(sl.file)}" target="_blank" rel="noopener">${sl.credit}</a>, ${sl.license}</li>`).join('')}</ul></div>`, ['Schließen'], 'wide');
 }
 
 async function showChronik() {
@@ -174,6 +201,7 @@ async function flow() {
   await sleep(800);
   const win = g.winner === 'att' ? 'Die Bayern gewinnen' : 'Die Besatzung hält stand';
   const i = await modal(`<h2>${win}</h2><p>${g.endText}</p><p class="small">Tag ${Math.min(g.day, 25)} · Bayern ${g.att.men} Mann · Besatzung ${g.def.men} Mann</p>` + entryHtml(EPILOG), ['Chronik ansehen', 'Neues Spiel']);
+  song('tanz');
   if (i === 0) await showChronik();
   start();
 }
@@ -250,6 +278,7 @@ function updateUI() {
     $('storm').innerHTML = `Sturm <small>${Math.round(odds * 100)} %</small>`;
   }
   $('mute').textContent = muted ? '🔇' : '🔊';
+  $('mus').style.opacity = musicOn ? '1' : '0.45';
   $('info').textContent = sel ? `${t!.name}: ${t!.info}` : '';
 }
 
@@ -281,6 +310,7 @@ function bind() {
   $('chronik').onclick = () => showChronik();
   $('lex').onclick = () => showLexikon();
   $('mute').onclick = () => { muted = !muted; localStorage.setItem('wild-muted', muted ? '1' : '0'); updateUI(); };
+  $('mus').onclick = () => { musicOn = !musicOn; localStorage.setItem('wild-music', musicOn ? '1' : '0'); audio(); if (!music && ac) music = new Music(ac); if (musicOn) music!.play(game ? 'marsch' : 'tanz'); else music?.stop(); $('mus').style.opacity = musicOn ? '1' : '0.45'; };
   $('menu').onclick = async () => {
     const i = await modal('<h2>Menü</h2>', ['Spielanleitung', 'Neues Spiel', 'Weiterspielen']);
     if (i === 0 && game) showHelp(game.ctrl);
@@ -336,7 +366,7 @@ function frame(now: number) {
     // Fernrohr
     const iw = Math.min(cw * 0.36, 460), ih = Math.min(vh * 0.5, iw * 0.62);
     const s = game.side();
-    const ix = s === 'def' ? cw - iw - 10 : 10, iy = top + 10;
+    const ix = 10, iy = top + 10;
     let fx0 = 418, fx1 = 530, fy0 = 776, fy1 = 828;
     if (s === 'def' && game.phase !== 'over') {
       const ag = game.gunsOf('att');

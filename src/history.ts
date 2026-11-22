@@ -99,3 +99,26 @@ export function dateOf(day: number) {
   const md = inAug ? d : d - 31;
   return `${WD[day % 7]}, ${md}. ${inAug ? 'August' : 'September'} 1642`;
 }
+
+// Vorspann: echte Bilder von Wikimedia Commons (Lizenzen geprüft, siehe IMAGES.md)
+export interface Slide { file: string; credit: string; license: string; title: string; text: string; tag: Tag }
+export const commonsUrl = (file: string, width = 1600) => `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=${width}`;
+export const commonsPage = (file: string) => `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file.replace(/ /g, '_'))}`;
+
+export const SLIDES: Slide[] = [
+  { file: 'Donautal bei Beuron mit Wildenstein.jpg', credit: 'Foto: Andreas Praefcke, 2007', license: 'CC BY 3.0', tag: 'belegt',
+    title: 'Das Obere Donautal', text: 'Auf einem Kalkfelsen, rund 200 Meter über der Donau, steht die Burg Wildenstein. Angreifen kann man sie nur von der Hochfläche im Nordosten.' },
+  { file: 'De Merian Sueviae 287.jpg', credit: 'Matthäus Merian, Topographia Sueviae, 1643', license: 'gemeinfrei', tag: 'hintergrund',
+    title: 'Schwaben im Krieg', text: 'Seit 1618 tobt der Dreißigjährige Krieg. Merians Kupferstiche zeigen Burgen und Städte Schwabens, wie sie die Menschen damals sahen.' },
+  { file: 'Bartlett wildenstein.jpg', credit: 'William Henry Bartlett, 1840', license: 'gemeinfrei', tag: 'belegt',
+    title: 'Sonntag, 10. August 1642', text: 'Der Kommandant feiert mit drei seiner vier Musketiere auf einem Fest in Meßkirch. Truppen vom Hohentwiel steigen durch eine Schießscharte ein. Die Burg ist verloren, ohne dass ein Schuss fällt.' },
+  { file: 'Kunstdenkmäler KN 1887 S413 Wildenstein Grundriss.jpg', credit: 'Josef Durm, Die Kunstdenkmäler des Großherzogthums Baden, 1887', license: 'gemeinfrei', tag: 'belegt',
+    title: 'Die Bayern rücken an', text: 'Zwei Gräben, eine drei Meter dicke Schildmauer und eine Bastion mit fünfeinhalb Meter starken Mauern. Bayerische Truppen schließen die Burg ein. Was sie mitbrachten, ist nicht überliefert.' },
+  { file: 'Landappbw 467414 1818 Burg Wildenstein bei Leibertingen.jpg', credit: 'Foto: Roland Knobloch, 2021', license: 'CC0', tag: 'belegt',
+    title: '25 Tage', text: 'Die Burg steht bis heute. Wie die Belagerung ausging, erfährst du am Ende. Jetzt liegt es an dir.' },
+];
+
+export const MUSIC_NOTE: Entry = {
+  tag: 'hintergrund', title: 'Musik um 1600',
+  text: 'Im Krieg gaben Trommler und Pfeifer die Signale: zum Sammeln, zum Marsch, zum Sturm, und ein Trommler mit weißer Fahne überbrachte Verhandlungsangebote. Zum Tanz spielten Schalmeien, Dudelsäcke, Lauten und Fiedeln. Michael Praetorius veröffentlichte 1612 mit „Terpsichore“ eine Sammlung von über 300 Tänzen. Die Musik in diesem Spiel ist eine eigene Komposition im Stil der Zeit, kein Originalstück.',
+};
