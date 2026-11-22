@@ -36,4 +36,13 @@ Die Bilder im Vorspann werden direkt von Wikimedia Commons geladen. Lizenzen gep
 | Siège de Philippsburg (1644) - JB Le Paon - Musée Condé (cropped).jpg | Jean-Baptiste Le Paon, 1769 | gemeinfrei |
 | FestungPhilippsburg1.jpg | Merian/Zeiller | gemeinfrei |
 
+## Kapitel 5
+
+| Datei | Urheber | Lizenz |
+|---|---|---|
+| François-Louis Dedon-Duclos Limmatübergang Massénas bei Dietikon 25. September 1799.jpg | nach François-Louis Dedon-Duclos, 1801 | gemeinfrei |
+| André Masséna (Fontaine et Gros).jpg | Fontaine und Gros | gemeinfrei |
+| Schlacht bei Zuerich 2 1799.jpg | Dmitri Miliutin, 1857 | gemeinfrei |
+| Vasily Surikov - Suvorov Crossing the Alps in 1799 - Google Art Project.jpg | Wassili Surikow, 1899 | gemeinfrei |
+
 Musik: eigene Kompositionen im Stil um 1600, im Browser synthetisiert.

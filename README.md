@@ -4,6 +4,7 @@ Geschichtsspiele im Browser nach echten Ereignissen des Dreißigjährigen Kriege
 
 - **Kapitel 1: Belagerung von Wildenstein 1642** – Artillerie-Belagerung einer Felsenburg im Oberen Donautal (Leibertingen).
 - **Kapitel 2: Schlacht bei Freiburg 1644** – rundenbasierte Strategie auf der Karte des Breisgaus: Enghien und Turenne gegen Mercy, 3.–10. August 1644. Halbtagesrunden, Regen und nasses Pulver, Schanzen, gemeinsame Angriffe, Siegpunkte, Rückzug über St. Peter.
+- **Kapitel 5: Zweite Schlacht um Zürich 1799** – Planung und Täuschung: als Masséna in der Nacht Übergangsstelle, Uhrzeit, Ablenkungen und den Angriff an der Linth planen, dann den 25. September in Viertelstunden ausspielen (Boote, Schiffbrücke, Angriffe, Reserve). Oder als Korsakow aus unsicheren Meldungen den echten Angriff erkennen.
 - **Kapitel 4: Belagerung von Philippsburg 1644** – Belagerungsspiel am Rhein, Enghien gegen Oberst Baumberger, 25. August bis 15. September 1644: Arbeitstrupps auf Schanzring, Laufgräben, Batterien, Minen und Grabenfüllung verteilen, Ausfälle, Gegenminen, Übergabeverhandlung, Wettlauf gegen Mercys Entsatz.
 - **Kapitel 3: Hohentwiel 1634–1650** – Festungs- und Raubzugspiel als Konrad Widerholt: Jahreszeiten-Runden, Sold, Getreide, Pulver, Zorn der Umgebung, fünf historische Belagerungen und Entscheidungen (Befehl des Herzogs, Weimar, Frankreich, Rezess 1644).
 
@@ -44,6 +45,7 @@ Aufbau (`src/`):
 - `freiburg/` – Kapitel 2: Karte, Regeln und KI
 - `hohentwiel/` – Kapitel 3: Regeln, Ereignisse, Darstellung
 - `philippsburg/` – Kapitel 4: Regeln, KI, Karte
+- `zuerich/` – Kapitel 5: Regeln, KI, Karte
 - `render.ts`, `main.ts` – Grafik und Bedienung
 
 Jeder Push auf `main` wird automatisch über GitHub Actions auf GitHub Pages veröffentlicht.

@@ -143,3 +143,28 @@ body.ph #phCtl{display:block;position:absolute;left:0;right:0;bottom:0;backgroun
 #phBody .act small{font-size:11px;opacity:.75;line-height:1.25}
 @media (max-height:500px){#phBody .act small{display:none}#phBody .act{flex:1 1 90px;padding:3px 6px}#phBody .task .tn{min-width:0}#phBody .task .pips{display:none}#phHud .row2{font-size:11px}#phBody .task{font-size:11px}}
 #phBody .free{font-size:12px;opacity:.8}
+
+/* Kapitel 5 Zürich */
+#zHud,#zCtl{display:none}
+body.zh #hud,body.zh #ctl{display:none}
+body.zh #zHud{display:block;position:absolute;left:0;right:0;top:0;background:linear-gradient(#2a241dee,#2a241dcc);padding:5px 10px;border-bottom:1px solid #6b5a3c;font-size:14px}
+#zHud .row1{display:flex;gap:12px;align-items:center}
+#zHud .suw{font-size:12px;opacity:.85}
+#zHud .row2{font-size:13px;margin-top:3px;line-height:1.35}
+#zHud button{padding:2px 8px;font-size:13px}
+#zHud .fr{color:#9db4f0}#zHud .ru{color:#9fd39f}
+body.zh #zCtl{display:block;position:absolute;left:0;right:0;bottom:0;background:linear-gradient(#2a241dcc,#2a241df2);border-top:1px solid #6b5a3c;padding:6px 10px calc(6px + env(safe-area-inset-bottom))}
+#zCtl.ai #zBody{opacity:.55;pointer-events:none}
+#zBody{display:flex;flex-wrap:wrap;gap:6px;align-items:stretch}
+#zBody .act{display:flex;flex-direction:column;align-items:flex-start;text-align:left;flex:1 1 150px;max-width:280px;padding:5px 9px}
+#zBody .act small{font-size:11px;opacity:.75;line-height:1.25}
+#zBody .sect{display:flex;align-items:center;gap:4px;flex:1 1 300px;font-size:13px;background:#00000025;padding:3px 6px;border-radius:4px}
+#zBody .sect .sn{flex:1;line-height:1.2}
+#zBody .sect button{padding:2px 6px;font-size:12px}
+#zBody .rep{font-style:italic}#zBody .rep.r1{color:#f0d27a}#zBody .rep.r2{color:#f0a35a}#zBody .rep.r3{color:#ff6b4a;font-weight:bold}
+.card .plan h3{margin:10px 0 4px;font-size:15px}
+.card .plan .opt{display:block;padding:3px 0;cursor:pointer}
+.card .plan .opt small{display:block;margin-left:22px;opacity:.75;font-size:12px}
+@media (max-height:500px){#zBody .act small{display:none}#zBody .act{flex:1 1 90px;padding:3px 6px}#zHud .row2{font-size:11px}#zHud .suw{display:none}#zBody .sect{flex:1 1 200px;font-size:11px}}
+@media (min-width:700px){.card .plan{display:grid;grid-template-columns:1fr 1fr;gap:0 22px}.card .plan h3{grid-column:auto}}
+.card .plan .grp{break-inside:avoid}

@@ -16,6 +16,10 @@ import { PhilippsburgUI, P_SLIDES } from './philippsburg/ui';
 import { P_SOURCES } from './philippsburg/game';
 Object.assign(SOURCES, P_SOURCES);
 let ph: PhilippsburgUI | null = null;
+import { ZuerichUI, Z_SLIDES } from './zuerich/ui';
+import { Z_SOURCES } from './zuerich/game';
+Object.assign(SOURCES, Z_SOURCES);
+let zh: ZuerichUI | null = null;
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 const cv = $<HTMLCanvasElement>('cv');
@@ -90,17 +94,28 @@ const modalOpen = () => !$('modal').classList.contains('hidden');
 
 // ---------- Start ----------
 async function start(): Promise<void> {
-  document.body.classList.remove('fb', 'ht', 'ph');
-  fb = null; game = null; ht = null; ph = null;
+  document.body.classList.remove('fb', 'ht', 'ph', 'zh');
+  fb = null; game = null; ht = null; ph = null; zh = null;
   const c = await modal(`<h1>Kriegsjahre im Südwesten</h1>
-    <p class="sub">Geschichtsspiele nach echten Ereignissen des Dreißigjährigen Krieges</p>
+    <p class="sub">Geschichtsspiele nach echten Ereignissen, vom Dreißigjährigen Krieg bis 1799</p>
     <p class="small">Belegte Fakten sind <span class="tag belegt">Belegt</span> markiert, allgemeines Wissen <span class="tag hintergrund">Hintergrundwissen</span>, Ergänztes <span class="tag erfunden">Erfunden fürs Spiel</span>.</p>`,
-    ['Kapitel 4: Belagerung von Philippsburg 1644', 'Kapitel 3: Hohentwiel 1634–1650', 'Kapitel 2: Schlacht bei Freiburg 1644', 'Kapitel 1: Belagerung von Wildenstein 1642'], 'start');
+    ['Kapitel 5: Zweite Schlacht um Zürich 1799', 'Kapitel 4: Belagerung von Philippsburg 1644', 'Kapitel 3: Hohentwiel 1634–1650', 'Kapitel 2: Schlacht bei Freiburg 1644', 'Kapitel 1: Belagerung von Wildenstein 1642'], 'start');
   audio(); song('tanz');
-  if (c === 0) return startPhilippsburg();
-  if (c === 1) return startHohentwiel();
-  if (c === 2) return startFreiburg();
+  if (c === 0) return startZuerich();
+  if (c === 1) return startPhilippsburg();
+  if (c === 2) return startHohentwiel();
+  if (c === 3) return startFreiburg();
   return startWildenstein();
+}
+
+async function startZuerich(): Promise<void> {
+  const i = await modal(`<h1>Zürich 1799</h1><p class="sub">Die Zweite Schlacht um Zürich, 25. und 26. September 1799</p>
+    <p>Masséna will die Russen unter Korsakow schlagen, bevor Suworow über die Alpen kommt. In einer Nacht muss er die Limmat überqueren, ohne dass der Gegner merkt, wo der echte Angriff kommt.</p>`,
+    ['Zurück', 'Vorspann ansehen', 'Als Korsakow (gegen KI)', 'Als Masséna (gegen KI)'], 'start');
+  if (i === 0) return start();
+  if (i === 1) { await intro(Z_SLIDES); return startZuerich(); }
+  zh = new ZuerichUI({ modal, entryHtml, log, song, boom, exit: () => { zh = null; start(); } }, i === 2 ? 'ru' : 'fr');
+  zh.run();
 }
 
 async function startPhilippsburg(): Promise<void> {
@@ -418,7 +433,8 @@ function frame(now: number) {
   if (cv.width !== Math.round(cw * dpr) || cv.height !== Math.round(ch * dpr)) { cv.width = Math.round(cw * dpr); cv.height = Math.round(ch * dpr); }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.fillStyle = '#1d1b18'; ctx.fillRect(0, 0, cw, ch);
-  if (ph) { ph.draw(ctx, cw, ch, dt); document.documentElement.style.setProperty('--ctlh', ($('phCtl').offsetHeight + 6) + 'px'); }
+  if (zh) { zh.draw(ctx, cw, ch, dt); document.documentElement.style.setProperty('--ctlh', ($('zCtl').offsetHeight + 6) + 'px'); }
+  else if (ph) { ph.draw(ctx, cw, ch, dt); document.documentElement.style.setProperty('--ctlh', ($('phCtl').offsetHeight + 6) + 'px'); }
   else if (ht) { ht.draw(ctx, cw, ch, dt); document.documentElement.style.setProperty('--ctlh', ($('htPanel').offsetHeight + 6) + 'px'); }
   else if (fb) { fb.draw(ctx, cw, ch, dt); document.documentElement.style.setProperty('--ctlh', ($('fbPanel').offsetHeight + 6) + 'px'); }
   else if (game) {
