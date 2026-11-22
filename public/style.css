@@ -92,3 +92,17 @@ button.primary:hover:not(:disabled){background:#b5472a}
 #intro .credit{font-size:12px;opacity:.75;margin-top:6px}#intro .credit a{color:#f3e7c8}
 #intro .btns{display:flex;gap:8px;justify-content:flex-end}
 @keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
+#fbHud,#fbPanel{display:none}
+body.fb #hud,body.fb #ctl{display:none}
+body.fb #fbHud{display:block;position:absolute;left:0;right:0;top:0;background:linear-gradient(#2a241dee,#2a241dcc);padding:5px 10px;border-bottom:1px solid #6b5a3c;font-size:14px}
+#fbHud .row1{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+#fbHud .row2{font-size:12.5px;opacity:.9;margin-top:2px}
+#fbHud button{padding:2px 8px;font-size:13px}
+#fbStats b.fr{color:#9db6f0}#fbStats b.bav{color:#f0a198}
+.turn.fr{background:#2e4f9e;color:#fff}.turn.bav{background:#a8342a;color:#fff}
+body.fb #fbPanel{display:flex;flex-direction:column;gap:5px;position:absolute;left:0;right:0;bottom:0;background:linear-gradient(#2a241dcc,#2a241df2);border-top:1px solid #6b5a3c;padding:6px 10px calc(6px + env(safe-area-inset-bottom));font-size:14px}
+#fbPanel.ai .actions{opacity:.45;pointer-events:none}
+#fbAi{color:#e8c25a;font-style:italic}#fbAi:empty{display:none}
+#fbSel{min-height:1.3em}
+.card .cols{display:flex;gap:20px}.card .cols>div{flex:1}
+@media (max-height:500px){body.fb #fbHud{font-size:12px;padding:3px 8px}body.fb #fbPanel{font-size:12px;padding:4px 8px}}

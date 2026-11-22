@@ -10,4 +10,14 @@ Die Bilder im Vorspann werden direkt von Wikimedia Commons geladen. Lizenzen gep
 | [Kunstdenkmäler KN 1887 S413 Wildenstein Grundriss.jpg](https://commons.wikimedia.org/wiki/File:Kunstdenkm%C3%A4ler_KN_1887_S413_Wildenstein_Grundriss.jpg) | Josef Durm, 1887 | gemeinfrei |
 | [Landappbw 467414 1818 Burg Wildenstein bei Leibertingen.jpg](https://commons.wikimedia.org/wiki/File:Landappbw_467414_1818_Burg_Wildenstein_bei_Leibertingen.jpg) | Roland Knobloch, 2021 | CC0 |
 
+## Kapitel 2
+
+| Datei | Urheber | Lizenz |
+|---|---|---|
+| Freiburg merian01.jpg | Matthäus Merian, 1644 | gemeinfrei |
+| Plan des combats de Fribourg Donnés au mois d'Aoust 1644 - btv1b84933119.jpg | Antoine Coquart, 1644 (BnF) | gemeinfrei |
+| Portret van Franz von Mercy, RP-P-1908-5133.jpg | Rijksmuseum, 1649 | CC0 |
+| Justus van Egmont - Portrait of Louis de Bourbon, Prince of Condé.jpg | Justus van Egmont, 17. Jh. | gemeinfrei |
+| Schlachtechrüz.jpg | W-j-s | gemeinfrei |
+
 Musik: eigene Kompositionen im Stil um 1600, im Browser synthetisiert.

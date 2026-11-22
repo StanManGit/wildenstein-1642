@@ -3,6 +3,11 @@ import { drawScene, fitView, toWorld, View } from './render';
 import { Gun, TYPES, Side } from './sim';
 import { PROLOG, CHRONICLE, EPILOG, SPOTS, SOURCES, Entry, tagLabel, dateOf, GUNINFO_NOTE, SLIDES, commonsUrl, commonsPage, MUSIC_NOTE } from './history';
 import { Music } from './music';
+import { FreiburgUI } from './freiburg/ui';
+import { FB_SLIDES, FB_SOURCES } from './freiburg/data';
+import type { Slide } from './history';
+Object.assign(SOURCES, FB_SOURCES);
+let fb: FreiburgUI | null = null;
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 const cv = $<HTMLCanvasElement>('cv');
@@ -76,17 +81,41 @@ function modal(html: string, buttons: string[], cls = ''): Promise<number> {
 const modalOpen = () => !$('modal').classList.contains('hidden');
 
 // ---------- Start ----------
-async function start() {
+async function start(): Promise<void> {
+  document.body.classList.remove('fb');
+  fb = null; game = null;
+  const c = await modal(`<h1>Kriegsjahre im Südwesten</h1>
+    <p class="sub">Geschichtsspiele nach echten Ereignissen des Dreißigjährigen Krieges</p>
+    <p class="small">Belegte Fakten sind <span class="tag belegt">Belegt</span> markiert, allgemeines Wissen <span class="tag hintergrund">Hintergrundwissen</span>, Ergänztes <span class="tag erfunden">Erfunden fürs Spiel</span>.</p>`,
+    ['Kapitel 2: Schlacht bei Freiburg 1644', 'Kapitel 1: Belagerung von Wildenstein 1642'], 'start');
+  audio(); song('tanz');
+  if (c === 0) return startFreiburg();
+  return startWildenstein();
+}
+
+async function startFreiburg(): Promise<void> {
+  const html = `<h1>Freiburg 1644</h1>
+    <p class="sub">Die Schlacht um die Höhen vor Freiburg, 3. bis 10. August 1644</p>
+    <p>Der bayerische Feldmarschall Mercy hat Freiburg genommen und sich auf den Bergen südlich der Stadt verschanzt. Enghien und Turenne greifen mit dem französischen Heer an. Acht Tage, Regen, fünf Stürme auf den Schlierberg.</p>`;
+  const i = await modal(html, ['Zurück', 'Vorspann ansehen', 'Zwei Spieler an einem Gerät', 'Als Bayern (gegen KI)', 'Als Franzosen (gegen KI)'], 'start');
+  if (i === 0) return start();
+  if (i === 1) { await intro(FB_SLIDES); return startFreiburg(); }
+  const ctrl: Record<'fr' | 'bav', 'human' | 'ai'> = i === 2 ? { fr: 'human', bav: 'human' } : i === 3 ? { fr: 'ai', bav: 'human' } : { fr: 'human', bav: 'ai' };
+  fb = new FreiburgUI({ modal, entryHtml, log, song, intro, exit: () => { fb = null; start(); } }, ctrl);
+  fb.run();
+}
+
+async function startWildenstein(): Promise<void> {
   const html = `
     <h1>Wildenstein 1642</h1>
     <p class="sub">Die Belagerung einer Felsenburg im Oberen Donautal</p>
     <p>August 1642. Truppen vom Hohentwiel haben die Burg Wildenstein durch einen Handstreich genommen. Nun rücken die Bayern an. Wer gewinnt die 25 Tage bis zum 4. September?</p>
     <p class="small">Ein Geschichtsspiel nach echten Ereignissen. Belegte Fakten sind <span class="tag belegt">Belegt</span> markiert, Ergänztes ist <span class="tag erfunden">Erfunden fürs Spiel</span>.</p>`;
-  const i = await modal(html, ['Vorspann ansehen', 'Geschichte & Burg', 'Zwei Spieler an einem Gerät', 'Als Besatzung (gegen KI)', 'Als Bayern (gegen KI)'], 'start');
-  audio(); song('tanz');
-  if (i === 0) { await intro(); return start(); }
-  if (i === 1) { await showLexikon(); return start(); }
-  const ctrl: Record<Side, Controller> = i === 2 ? { att: 'human', def: 'human' } : i === 3 ? { att: 'ai', def: 'human' } : { att: 'human', def: 'ai' };
+  const i = await modal(html, ['Zurück', 'Vorspann ansehen', 'Geschichte & Burg', 'Zwei Spieler an einem Gerät', 'Als Besatzung (gegen KI)', 'Als Bayern (gegen KI)'], 'start');
+  if (i === 0) return start();
+  if (i === 1) { await intro(SLIDES); return startWildenstein(); }
+  if (i === 2) { await showLexikon(); return startWildenstein(); }
+  const ctrl: Record<Side, Controller> = i === 3 ? { att: 'human', def: 'human' } : i === 4 ? { att: 'ai', def: 'human' } : { att: 'human', def: 'ai' };
   game = new Game((Math.random() * 2 ** 31) | 0, ctrl, { log, boom, changed: updateUI });
   sel = null;
   seen.clear();
@@ -98,21 +127,21 @@ async function start() {
   flow();
 }
 
-function intro(): Promise<void> {
+function intro(SL: Slide[]): Promise<void> {
   return new Promise(res => {
     const el = $('intro');
     let k = 0;
     const show = () => {
-      if (k >= SLIDES.length) { el.classList.add('hidden'); localStorage.setItem('wild-intro', '1'); res(); return; }
-      const sl = SLIDES[k];
+      if (k >= SL.length) { el.classList.add('hidden'); localStorage.setItem('wild-intro', '1'); res(); return; }
+      const sl = SL[k];
       el.innerHTML = `<div class="frame"><img alt="${sl.title}" src="${commonsUrl(sl.file)}" class="kb${k % 2}"></div>
         <div class="cap"><span class="tag ${sl.tag}">${tagLabel(sl.tag)}</span><h2>${sl.title}</h2><p>${sl.text}</p>
         <div class="credit"><a href="${commonsPage(sl.file)}" target="_blank" rel="noopener">${sl.credit}</a> · ${sl.license}</div>
-        <div class="btns"><button id="skip">Überspringen</button><button id="nxt" class="primary">${k < SLIDES.length - 1 ? 'Weiter' : 'Zum Spiel'}</button></div></div>`;
+        <div class="btns"><button id="skip">Überspringen</button><button id="nxt" class="primary">${k < SL.length - 1 ? 'Weiter' : 'Zum Spiel'}</button></div></div>`;
       const img = el.querySelector('img')!;
       img.onerror = () => { img.style.display = 'none'; };
       $('nxt').onclick = () => { k++; show(); };
-      $('skip').onclick = () => { k = SLIDES.length; show(); };
+      $('skip').onclick = () => { k = SL.length; show(); };
     };
     el.classList.remove('hidden');
     show();
@@ -331,6 +360,7 @@ function bind() {
     }
   });
   cv.addEventListener('click', e => {
+    if (fb) { const r = cv.getBoundingClientRect(); fb.click(e.clientX - r.left, e.clientY - r.top); return; }
     if (!game || !mainView) return;
     const r = cv.getBoundingClientRect();
     const px = e.clientX - r.left, py = e.clientY - r.top;
@@ -356,7 +386,8 @@ function frame(now: number) {
   if (cv.width !== Math.round(cw * dpr) || cv.height !== Math.round(ch * dpr)) { cv.width = Math.round(cw * dpr); cv.height = Math.round(ch * dpr); }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.fillStyle = '#1d1b18'; ctx.fillRect(0, 0, cw, ch);
-  if (game) {
+  if (fb) { fb.draw(ctx, cw, ch, dt); document.documentElement.style.setProperty('--ctlh', ($('fbPanel').offsetHeight + 6) + 'px'); }
+  else if (game) {
     game.update(dt);
     const top = $('hud').offsetHeight, bottom = $('ctl').offsetHeight + 6;
     document.documentElement.style.setProperty('--ctlh', bottom + 'px');
