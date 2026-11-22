@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Wildenstein 1642 – Die Belagerung</title>
+<meta name="description" content="Historisches Artillerie-Strategiespiel: die Belagerung der Burg Wildenstein im Oberen Donautal, August/September 1642.">
+<meta name="theme-color" content="#2a241d">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <canvas id="cv"></canvas>
+  <header id="hud">
+    <div class="row1">
+      <span id="day"></span>
+      <span id="wx"></span>
+      <span id="turn" class="turn"></span>
+      <span class="spacer"></span>
+      <button id="chronik" title="Chronik">📜 Chronik</button>
+      <button id="lex" title="Burg, Geschütze, Quellen">🏰 Wissen</button>
+      <button id="mute" title="Ton"></button>
+      <button id="menu" title="Menü">☰</button>
+    </div>
+    <div class="row2"><span id="statA"></span><span id="statD"></span></div>
+  </header>
+  <div id="log"></div>
+  <footer id="ctl">
+    <div id="aiNote"></div>
+    <div id="guns"></div>
+    <div class="aim">
+      <label>Erhöhung</label>
+      <button id="angMM">−1°</button><button id="angM">−</button>
+      <input type="range" id="ang">
+      <button id="angP">+</button><button id="angPP">+1°</button>
+      <span id="angV" class="val"></span>
+    </div>
+    <div class="aim">
+      <label>Pulver</label>
+      <button id="chgM">−</button>
+      <input type="range" id="chg">
+      <button id="chgP">+</button>
+      <span id="chgV" class="val"></span>
+    </div>
+    <div class="actions">
+      <button id="fire" class="primary">🔥 Feuer</button>
+      <button id="sap" class="att-only" title="Geschütz 40 m näher heranbringen (kostet den Schuss heute)">Laufgraben vor</button>
+      <button id="fill" class="att-only" title="Faschinen in den Graben werfen">Graben füllen</button>
+      <button id="storm" class="att-only">Sturm</button>
+      <button id="offer" class="att-only" title="Übergabe gegen freien Abzug anbieten">Akkord anbieten</button>
+      <button id="repair" class="def-only" title="Bresche nachts verbauen (Doppelhaken feuert dann nicht)">Bresche ausbessern</button>
+      <button id="end">Zug beenden ⏭</button>
+    </div>
+    <div id="info"></div>
+  </footer>
+  <div id="modal" class="hidden"><div id="card" class="card"></div></div>
+  <div id="rotate">Bitte das Handy quer halten 📱↻</div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "wildenstein-1642",
+  "version": "1.0.0",
+  "description": "Historisches Belagerungsspiel: Burg Wildenstein 1642",
+  "scripts": {
+    "build": "node build.mjs",
+    "check": "tsc -p .",
+    "serve": "npm run build && python3 -m http.server -d dist 8080"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2"
+  },
+  "private": true
+}
