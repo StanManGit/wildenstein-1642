@@ -106,3 +106,17 @@ body.fb #fbPanel{display:flex;flex-direction:column;gap:5px;position:absolute;le
 #fbSel{min-height:1.3em}
 .card .cols{display:flex;gap:20px}.card .cols>div{flex:1}
 @media (max-height:500px){body.fb #fbHud{font-size:12px;padding:3px 8px}body.fb #fbPanel{font-size:12px;padding:4px 8px}}
+#htHud,#htPanel{display:none}
+body.ht #hud,body.ht #ctl{display:none}
+body.ht #htHud{display:block;position:absolute;left:0;right:0;top:0;background:linear-gradient(#2a241dee,#2a241dcc);padding:5px 10px;border-bottom:1px solid #6b5a3c;font-size:14px}
+#htHud .row1{display:flex;gap:12px;align-items:center}
+#htHud .row2{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;margin-top:3px;align-items:center}
+#htHud button{padding:2px 8px;font-size:13px}
+#htHud small{opacity:.7}
+.siege{color:#ff9c86;font-weight:bold}
+.bar{display:inline-block;width:70px;height:8px;background:#0006;border-radius:4px;vertical-align:middle;overflow:hidden}.bar i{display:block;height:100%}
+body.ht #htPanel{display:block;position:absolute;left:0;right:0;bottom:0;background:linear-gradient(#2a241dcc,#2a241df2);border-top:1px solid #6b5a3c;padding:6px 10px calc(6px + env(safe-area-inset-bottom))}
+#htActs{display:flex;gap:6px;flex-wrap:wrap}
+#htActs .act{display:flex;flex-direction:column;align-items:flex-start;text-align:left;flex:1 1 180px;max-width:320px;padding:5px 9px}
+#htActs .act small{font-size:11px;opacity:.75;line-height:1.25}
+@media (max-height:500px){#htActs .act small{display:none}body.ht #htHud{font-size:12px}#htHud .row2{font-size:11px}}

@@ -8,6 +8,10 @@ import { FB_SLIDES, FB_SOURCES } from './freiburg/data';
 import type { Slide } from './history';
 Object.assign(SOURCES, FB_SOURCES);
 let fb: FreiburgUI | null = null;
+import { HohentwielUI, H_SLIDES } from './hohentwiel/ui';
+import { H_SOURCES } from './hohentwiel/game';
+Object.assign(SOURCES, H_SOURCES);
+let ht: HohentwielUI | null = null;
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 const cv = $<HTMLCanvasElement>('cv');
@@ -82,15 +86,26 @@ const modalOpen = () => !$('modal').classList.contains('hidden');
 
 // ---------- Start ----------
 async function start(): Promise<void> {
-  document.body.classList.remove('fb');
-  fb = null; game = null;
+  document.body.classList.remove('fb', 'ht');
+  fb = null; game = null; ht = null;
   const c = await modal(`<h1>Kriegsjahre im Südwesten</h1>
     <p class="sub">Geschichtsspiele nach echten Ereignissen des Dreißigjährigen Krieges</p>
     <p class="small">Belegte Fakten sind <span class="tag belegt">Belegt</span> markiert, allgemeines Wissen <span class="tag hintergrund">Hintergrundwissen</span>, Ergänztes <span class="tag erfunden">Erfunden fürs Spiel</span>.</p>`,
-    ['Kapitel 2: Schlacht bei Freiburg 1644', 'Kapitel 1: Belagerung von Wildenstein 1642'], 'start');
+    ['Kapitel 3: Hohentwiel 1634–1650', 'Kapitel 2: Schlacht bei Freiburg 1644', 'Kapitel 1: Belagerung von Wildenstein 1642'], 'start');
   audio(); song('tanz');
-  if (c === 0) return startFreiburg();
+  if (c === 0) return startHohentwiel();
+  if (c === 1) return startFreiburg();
   return startWildenstein();
+}
+
+async function startHohentwiel(): Promise<void> {
+  const i = await modal(`<h1>Hohentwiel</h1><p class="sub">Die Festung, die niemand nehmen konnte, 1634 bis 1650</p>
+    <p>Mitten im Land der Kaiserlichen hält Konrad Widerholt einen Vulkanfels für Württemberg. Er treibt Abgaben ein, überfällt Städte, entführt Geiseln und übersteht fünf Belagerungen. Kannst du es ihm gleichtun?</p>`,
+    ['Zurück', 'Vorspann ansehen', 'Als Widerholt spielen'], 'start');
+  if (i === 0) return start();
+  if (i === 1) { await intro(H_SLIDES); return startHohentwiel(); }
+  ht = new HohentwielUI({ modal, entryHtml, log, song, exit: () => { ht = null; start(); } });
+  ht.run();
 }
 
 async function startFreiburg(): Promise<void> {
@@ -361,6 +376,7 @@ function bind() {
   });
   cv.addEventListener('click', e => {
     if (fb) { const r = cv.getBoundingClientRect(); fb.click(e.clientX - r.left, e.clientY - r.top); return; }
+    if (ht) return;
     if (!game || !mainView) return;
     const r = cv.getBoundingClientRect();
     const px = e.clientX - r.left, py = e.clientY - r.top;
@@ -386,7 +402,8 @@ function frame(now: number) {
   if (cv.width !== Math.round(cw * dpr) || cv.height !== Math.round(ch * dpr)) { cv.width = Math.round(cw * dpr); cv.height = Math.round(ch * dpr); }
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.fillStyle = '#1d1b18'; ctx.fillRect(0, 0, cw, ch);
-  if (fb) { fb.draw(ctx, cw, ch, dt); document.documentElement.style.setProperty('--ctlh', ($('fbPanel').offsetHeight + 6) + 'px'); }
+  if (ht) { ht.draw(ctx, cw, ch, dt); document.documentElement.style.setProperty('--ctlh', ($('htPanel').offsetHeight + 6) + 'px'); }
+  else if (fb) { fb.draw(ctx, cw, ch, dt); document.documentElement.style.setProperty('--ctlh', ($('fbPanel').offsetHeight + 6) + 'px'); }
   else if (game) {
     game.update(dt);
     const top = $('hud').offsetHeight, bottom = $('ctl').offsetHeight + 6;

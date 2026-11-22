@@ -20,4 +20,12 @@ Die Bilder im Vorspann werden direkt von Wikimedia Commons geladen. Lizenzen gep
 | Justus van Egmont - Portrait of Louis de Bourbon, Prince of Condé.jpg | Justus van Egmont, 17. Jh. | gemeinfrei |
 | Schlachtechrüz.jpg | W-j-s | gemeinfrei |
 
+## Kapitel 3
+
+| Datei | Urheber | Lizenz |
+|---|---|---|
+| Hohentwiel Ansicht 1643 Merian.JPG | Matthäus Merian d. Ä., 1643 | gemeinfrei |
+| Konrad Widerholt Stich.jpg | unbekannt, 17. Jh. | gemeinfrei |
+| Hohentwiel Belagerung 1641 Merian.JPG | Matthäus Merian d. Ä., nach 1641 | gemeinfrei |
+
 Musik: eigene Kompositionen im Stil um 1600, im Browser synthetisiert.

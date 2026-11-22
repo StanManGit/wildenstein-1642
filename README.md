@@ -1,9 +1,10 @@
-# Kriegsjahre im Südwesten – Wildenstein 1642 und Freiburg 1644
+# Kriegsjahre im Südwesten
 
 Geschichtsspiele im Browser nach echten Ereignissen des Dreißigjährigen Krieges.
 
 - **Kapitel 1: Belagerung von Wildenstein 1642** – Artillerie-Belagerung einer Felsenburg im Oberen Donautal (Leibertingen).
 - **Kapitel 2: Schlacht bei Freiburg 1644** – rundenbasierte Strategie auf der Karte des Breisgaus: Enghien und Turenne gegen Mercy, 3.–10. August 1644. Halbtagesrunden, Regen und nasses Pulver, Schanzen, gemeinsame Angriffe, Siegpunkte, Rückzug über St. Peter.
+- **Kapitel 3: Hohentwiel 1634–1650** – Festungs- und Raubzugspiel als Konrad Widerholt: Jahreszeiten-Runden, Sold, Getreide, Pulver, Zorn der Umgebung, fünf historische Belagerungen und Entscheidungen (Befehl des Herzogs, Weimar, Frankreich, Rezess 1644).
 
 **Spielen:** https://stanmangit.github.io/wildenstein-1642/ (läuft auf PC, Tablet und Handy im Querformat; über „Zum Startbildschirm hinzufügen“ als App installierbar, danach auch offline spielbar)
 
@@ -40,6 +41,7 @@ Aufbau (`src/`):
 - `history.ts` – Chronik, Infotafeln, Quellen
 - `music.ts` – Musik im Stil um 1600, im Browser erzeugt
 - `freiburg/` – Kapitel 2: Karte, Regeln und KI
+- `hohentwiel/` – Kapitel 3: Regeln, Ereignisse, Darstellung
 - `render.ts`, `main.ts` – Grafik und Bedienung
 
 Jeder Push auf `main` wird automatisch über GitHub Actions auf GitHub Pages veröffentlicht.
